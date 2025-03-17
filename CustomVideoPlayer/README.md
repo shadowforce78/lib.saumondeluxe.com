@@ -202,7 +202,7 @@ Note : Certaines fonctionnalités comme le Picture-in-Picture peuvent ne pas êt
 
 ## Support
 
-Pour toute question ou assistance, n'hésitez pas à [créer une issue](https://github.com/shadowforce78/lib.saumondeluxe.com/issues) sur le dépôt GitHub ou à contacter directement [contact@saumondeluxe.com](mailto:contact@saumondeluxe.com).
+Pour toute question ou assistance, n'hésitez pas à [créer une issue](https://github.com/shadowforce78/lib.saumondeluxe.com/issues) sur le dépôt GitHub ou à contacter directement [contact@planque.adam@gmail.com](mailto:contact@planque.adam@gmail.com).
 
 ## Licence
 
