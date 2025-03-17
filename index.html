@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SaumonDeLuxe - Bibliothèques JavaScript</title>
+    <!-- Ajout de la bibliothèque marked.js pour convertir le Markdown en HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --primary-color: #ff5722;
@@ -159,6 +161,119 @@
             display: flex;
             gap: 10px;
         }
+
+        /* Styles pour le modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        /* Styles pour le contenu Markdown rendu */
+        .markdown-body {
+            padding: 20px 0;
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .markdown-body h1 {
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid #eaecef;
+            margin-top: 0;
+        }
+
+        .markdown-body h2 {
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid #eaecef;
+            margin-top: 24px;
+        }
+
+        .markdown-body code {
+            font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .markdown-body pre {
+            background-color: #f6f8fa;
+            border-radius: 3px;
+            padding: 16px;
+            overflow: auto;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .markdown-body table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+
+        .markdown-body table th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+
+        .markdown-body blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+
+        /* Indicateur de chargement */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -195,7 +310,7 @@
                     </ul>
                     <div class="btn-container">
                         <a href="./CustomVideoPlayer/index.html" class="btn">Démonstration</a>
-                        <a href="./CustomVideoPlayer/README.md" class="btn btn-secondary">Documentation</a>
+                        <a href="#" class="btn btn-secondary" data-doc="./CustomVideoPlayer/README.md">Documentation</a>
                     </div>
                 </div>
             </div>
@@ -219,11 +334,21 @@
                     </ul>
                     <div class="btn-container">
                         <a href="./TimeTableLib/index.html" class="btn">Démonstration</a>
-                        <a href="./TimeTableLib/README.md" class="btn btn-secondary">Documentation</a>
+                        <a href="#" class="btn btn-secondary" data-doc="./TimeTableLib/README.md">Documentation</a>
                     </div>
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Modal pour afficher la documentation -->
+    <div id="documentationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalContent" class="markdown-body">
+                <div class="loading">Chargement de la documentation...</div>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -233,6 +358,93 @@
                     style="color: white;">contact@planque.adam@gmail.com</a></p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Récupération des éléments du DOM
+            const modal = document.getElementById('documentationModal');
+            const modalContent = document.getElementById('modalContent');
+            const closeBtn = document.querySelector('.close-modal');
+            const docButtons = document.querySelectorAll('[data-doc]');
+
+            // Fonction pour ouvrir le modal
+            function openModal() {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Empêche le défilement de la page derrière le modal
+            }
+
+            // Fonction pour fermer le modal
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Rétablit le défilement
+            }
+
+            // Fonction pour charger et convertir le contenu Markdown
+            async function loadDocumentation(url) {
+                modalContent.innerHTML = '<div class="loading">Chargement de la documentation...</div>';
+                openModal();
+
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Impossible de charger la documentation');
+                    }
+
+                    let markdown = await response.text();
+
+                    // Supprimer le premier commentaire HTML de filepath s'il existe
+                    markdown = markdown.replace(/<!--\s*filepath:.*?-->/i, '');
+
+                    // Convertir le Markdown en HTML
+                    const htmlContent = marked(markdown);
+                    modalContent.innerHTML = htmlContent;
+
+                    // Ajouter des classes aux éléments pour améliorer le style
+                    modalContent.querySelectorAll('img').forEach(img => {
+                        // Corriger les chemins d'image relatifs
+                        const docPath = url.substring(0, url.lastIndexOf('/') + 1);
+                        if (img.src.startsWith('http')) return; // Ignorer les URLs absolues
+                        if (!img.src.includes('://')) {
+                            const imgPath = img.getAttribute('src');
+                            if (imgPath.startsWith('./')) {
+                                img.src = docPath + imgPath.substring(2);
+                            } else {
+                                img.src = docPath + imgPath;
+                            }
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    modalContent.innerHTML = '<p>Erreur lors du chargement de la documentation. Veuillez réessayer.</p>';
+                }
+            }
+
+            // Événement pour les boutons de documentation
+            docButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const docUrl = this.getAttribute('data-doc');
+                    loadDocumentation(docUrl);
+                });
+            });
+
+            // Événements pour fermer le modal
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Fermer le modal avec Échap
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && modal.style.display === 'block') {
+                    closeModal();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
