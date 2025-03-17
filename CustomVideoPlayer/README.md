@@ -206,4 +206,4 @@ Pour toute question ou assistance, n'hésitez pas à [créer une issue](https://
 
 ## Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](./LICENSE) pour plus d'informations.
