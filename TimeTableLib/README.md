@@ -136,7 +136,7 @@ The library is distributed as a UMD module. In the browser, it attaches to the g
 
 ## Contributing
 
-If you'd like to contribute or report issues, please open an issue on our [GitHub repository](https://github.com/shadowforce78/TimeTableLib).
+If you'd like to contribute or report issues, please open an issue on our [GitHub repository](https://github.com/shadowforce78/lib.saumondeluxe.com).
 
 ## License
 
