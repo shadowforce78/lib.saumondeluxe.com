@@ -1,20 +1,40 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur Vidéo Custom</title>
+    <!-- CSS du lecteur vidéo -->
+    <link rel="stylesheet" href="https://lib.saumondeluxe.com/videoPlayer.css" />
+     <!-- <link rel="stylesheet" href="videoPlayer.css"> -->
 
+    <!-- Script du lecteur vidéo -->
+    <script src="https://lib.saumondeluxe.com/videoPlayer.js"></script>
+     <!-- <script src="videoPlayer.js"></script> -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- https://github.com/shadowforce78/CustomVideoPlayer -->
-    <div class="info">
-        <h1>Custom Video Player</h1>
-        <p>Un lecteur vidéo personnalisé en JavaScript</p>
-        <p>Aller sur le <a href="https://github.com/shadowforce78/CustomVideoPlayer">GitHub</a> du projet</p>
-    </div>
+    <div id="videoPlayer"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const player = new CustomVideoPlayer("#videoPlayer", {
+                source: "./video.mp4",
+                allowVideoSelection: false
+            });
+        });
+    </script>
 </body>
 
 </html>
