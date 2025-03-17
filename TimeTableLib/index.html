@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeTableLib - Interactive Timetable Library</title>
+  <!-- Include the library stylesheet -->
+  <link rel="stylesheet" href="./timeTable.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      color: #3a86ff;
+      margin-bottom: 10px;
+    }
+
+    .subheading {
+      color: #666;
+      font-weight: normal;
+      margin-top: 0;
+    }
+
+    .demo-section {
+      margin-bottom: 40px;
+    }
+
+    .options-panel {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .options-panel h3 {
+      margin-top: 0;
+      color: #3a86ff;
+    }
+
+    .github-link {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 5px 10px;
+      background-color: #333;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+    }
+
+    .github-link i {
+      margin-right: 5px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px 0;
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>TimeTableLib Demo</h1>
+      <h3 class="subheading">A lightweight JavaScript library for creating interactive timetables</h3>
+      <a href="https://github.com/shadowforce78/TimeTableLib" class="github-link" target="_blank">
+        <i class="fab fa-github"></i> View on GitHub
+      </a>
+    </div>
+
+    <div class="demo-section">
+      <div class="options-panel">
+        <h3>Example Timetable</h3>
+        <p>This demo shows a university timetable for a week in March 2025.</p>
+      </div>
+
+      <div id="timetable-container"></div>
+    </div>
+
+    <footer>
+      <p>TimeTableLib v1.0.0 | Created with ❤️ by SaumonDeLuxe| Documentation and more examples on GitHub</p>
+    </footer>
+  </div>
+
+  <!-- First, include the TimeTableLib JavaScript -->
+  <script src="./timeTable.js"></script>
+
+  <!-- Then, initialize with your data -->
+  <script>
+    // Sample data
+    const scheduleData = [
+      {
+        "Date": "10/03/2025",
+        "Heure": "14:00-15:00",
+        "Matière": "IN2R06",
+        "Personnel": "ZEITOUNI Karine",
+        "Groupe": "INF1",
+        "Salle": "Amphi B - VEL",
+        "Catégorie d’événement": "Cours Magistraux (CM)",
+        "Remarques": null
+      },
+      {
+        "Date": "10/03/2025",
+        "Heure": "09:30-11:00",
+        "Matière": "IN2R11",
+        "Personnel": "BARBOT Emmanuelle",
+        "Groupe": "INF1-B",
+        "Salle": "314 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "10/03/2025",
+        "Heure": "11:00-13:00",
+        "Matière": "IN2SA04",
+        "Personnel": null,
+        "Groupe": "INF1-B",
+        "Salle": "G23 - VEL",
+        "Catégorie d’événement": "Projet en autonomie",
+        "Remarques": null
+      },
+      {
+        "Date": "10/03/2025",
+        "Heure": "15:00-17:00",
+        "Matière": "IN2R03",
+        "Personnel": "ROBBA Isabelle",
+        "Groupe": "INF1-B",
+        "Salle": "I21 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "12/03/2025",
+        "Heure": "09:00-10:00",
+        "Matière": "IN2R04",
+        "Personnel": "OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "413 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "12/03/2025",
+        "Heure": "10:00-12:00",
+        "Matière": "IN2R04",
+        "Personnel": "OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "G23 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "12/03/2025",
+        "Heure": "13:00-15:00",
+        "Matière": "IN2R07",
+        "Personnel": "OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "512 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "13/03/2025",
+        "Heure": "09:00-11:00",
+        "Matière": "IN2R01",
+        "Personnel": "OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "G25 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "13/03/2025",
+        "Heure": "13:00-16:00",
+        "Matière": "IN2R07, IN2R12",
+        "Personnel": "CUKALLA Etleva, OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "G26 - VEL",
+        "Catégorie d’événement": "Travaux Pratiques (TP)",
+        "Remarques": null
+      },
+      {
+        "Date": "13/03/2025",
+        "Heure": "16:00-17:00",
+        "Matière": "IN2R12",
+        "Personnel": "CUKALLA Etleva",
+        "Groupe": "INF1-B",
+        "Salle": "414 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "13/03/2025",
+        "Heure": "11:00-12:00",
+        "Matière": "IN2R01",
+        "Personnel": "ROBBA Isabelle",
+        "Groupe": "INF1",
+        "Salle": "Amphi B - VEL",
+        "Catégorie d’événement": "Cours Magistraux (CM)",
+        "Remarques": null
+      },
+      {
+        "Date": "13/03/2025",
+        "Heure": "08:00-09:00",
+        "Matière": "IN2R01",
+        "Personnel": "OSTER Alain",
+        "Groupe": "INF1-B",
+        "Salle": "315 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      },
+      {
+        "Date": "11/03/2025",
+        "Heure": "11:00-12:30",
+        "Matière": "IN2R08",
+        "Personnel": "HOGUIN Fabrice",
+        "Groupe": "INF1",
+        "Salle": "Amphi C - VEL",
+        "Catégorie d’événement": "DS",
+        "Remarques": null
+      },
+      {
+        "Date": "11/03/2025",
+        "Heure": "09:30-11:00",
+        "Matière": null,
+        "Personnel": null,
+        "Groupe": "INF1-B",
+        "Salle": "G21 - VEL",
+        "Catégorie d’événement": "Reunion",
+        "Remarques": "[Alternance] : Atelier CFA recherche d'entreprise, avec Allan Dauvergne, chargé de relations entreprises CFA-Numia"
+      },
+      {
+        "Date": "11/03/2025",
+        "Heure": "13:30-15:30",
+        "Matière": "IN2R01",
+        "Personnel": "MARTIN Yohann",
+        "Groupe": "INF1-B",
+        "Salle": "G25 - VEL",
+        "Catégorie d’événement": "Travaux Pratiques (TP)",
+        "Remarques": null
+      },
+      {
+        "Date": "14/03/2025",
+        "Heure": "10:30-12:30",
+        "Matière": "IN2SA04",
+        "Personnel": null,
+        "Groupe": "INF1-B",
+        "Salle": "G23 - VEL",
+        "Catégorie d’événement": "Projet en autonomie",
+        "Remarques": null
+      },
+      {
+        "Date": "14/03/2025",
+        "Heure": "08:30-10:30",
+        "Matière": "IN2R06",
+        "Personnel": "ZEITOUNI Karine",
+        "Groupe": "INF1-B",
+        "Salle": "G25 - VEL",
+        "Catégorie d’événement": "Travaux Dirigés (TD)",
+        "Remarques": null
+      }
+    ]
+
+    // Initialize timetable when DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
+      // Create a new Timetable instance
+      const timetable = new Timetable("timetable-container", scheduleData, {
+        // Optional configuration
+        weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        timeInterval: 15,
+        minRowSpan: 2,
+        showIcons: true,
+        modalEnabled: true,
+        showProf: false,
+        showClasse: false,
+        mobileBreakpoint: 768,
+        startingDay: 0,
+        alwaysUseMobileView: false,
+        darkMode: false
+      });
+    });
+  </script>
+</body>
+
+</html>

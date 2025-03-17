@@ -1,0 +1,521 @@
+/**
+ * TimeTableLib - A JavaScript library for displaying interactive timetables
+ * Version 1.0.0
+ * 
+ * Main stylesheet
+ */
+
+/* Global CSS Variables - Light theme variables */
+:root {
+    --primary-color: #3a86ff;
+    --secondary-color: #8338ec;
+    --success-color: #06d6a0;
+    --warning-color: #ffbe0b;
+    --danger-color: #ef476f;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --background-color: #f8f9fa;
+    --table-bg: #ffffff;
+    --cell-bg: #ffffff;
+    --text-color: #333333;
+    --muted-text: #666666;
+    --border-color: #eaeaea;
+    --event-shadow: rgba(0, 0, 0, 0.06);
+    --hover-shadow: rgba(0, 0, 0, 0.1);
+    --empty-cell-bg: #fcfcfc;
+    --hour-cell-bg: rgba(0, 0, 0, 0.02);
+}
+
+/* Dark theme variables - applied when .dark-theme class is present */
+.dark-theme {
+    --primary-color: #4a94ff;
+    --secondary-color: #9256ec;
+    --success-color: #10e0aa;
+    --warning-color: #ffcd39;
+    --danger-color: #ff5a7e;
+    --light-color: #343a40;
+    --dark-color: #e9ecef;
+
+    --background-color: #1e1e2e;
+    --table-bg: #2a2a3a;
+    --cell-bg: #2a2a3a;
+    --text-color: #e9e9ef;
+    --muted-text: #b0b0ba;
+    --border-color: #444455;
+    --event-shadow: rgba(0, 0, 0, 0.2);
+    --hover-shadow: rgba(0, 0, 0, 0.25);
+    --empty-cell-bg: #252535;
+    --hour-cell-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* Container styles */
+.timetable-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+/* Table structure */
+.timetable {
+    width: 100%;
+    min-width: 300px;
+    /* Prevents table from becoming too narrow on small screens */
+    border-collapse: separate;
+    border-spacing: 1px;
+    table-layout: fixed;
+    background-color: var(--table-bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.timetable th {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 12px 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.timetable td {
+    border: none;
+    padding: 0;
+    position: relative;
+    background-color: var(--cell-bg);
+}
+
+/* Time column styles */
+.time-cell {
+    width: 80px;
+    text-align: center;
+    font-weight: 500;
+    vertical-align: middle;
+    color: var(--text-color);
+    border-right: 1px solid var(--border-color) !important;
+}
+
+/* Remove variable row heights; assign a constant height for each 15 min segment */
+.hour-row,
+.half-hour-row,
+.quarter-row {
+    height: 20px;
+}
+
+/* Ensure empty cells and event cells fill the segment height */
+.empty-cell {
+    min-height: 20px;
+}
+
+.event-cell {
+    height: 100%;
+}
+
+.hour-cell {
+    padding: 8px;
+    background-color: var(--hour-cell-bg);
+}
+
+.half-hour-cell {
+    padding: 4px;
+    font-size: 0.85em;
+    color: var(--muted-text);
+}
+
+.quarter-cell {
+    padding: 0;
+}
+
+.empty-cell {
+    background-color: var(--empty-cell-bg);
+}
+
+.event-cell {
+    padding: 0;
+    vertical-align: top;
+}
+
+/* Event styles */
+.event {
+    margin: 1px;
+    padding: 10px;
+    width: calc(100% - 2px);
+    box-sizing: border-box;
+    border-radius: 6px;
+    background-color: var(--cell-bg);
+    box-shadow: 0 2px 4px var(--event-shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 40px;
+    overflow: auto;
+    /* Change from hidden to auto to show all content */
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    /* Add cursor pointer to indicate clickable */
+    color: var(--text-color);
+}
+
+.event:hover {
+    box-shadow: 0 5px 15px var(--hover-shadow);
+    transform: translateY(-1px);
+}
+
+.event-color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.event-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    margin-top: 2px;
+    font-size: 0.95em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-time {
+    font-size: 0.8em;
+    color: var(--muted-text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-time:before {
+    content: "\f017";
+    /* Clock icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 4px;
+    font-size: 0.9em;
+    color: var(--muted-text);
+}
+
+.event-details {
+    font-size: 0.85em;
+    color: var(--muted-text);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: auto;
+    /* Allow scrolling if content is too large */
+}
+
+.location,
+.staff,
+.group,
+.remarks {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.location i,
+.staff i,
+.group i,
+.remarks i {
+    margin-right: 5px;
+    width: 12px;
+    color: #666;
+}
+
+/* Event category styles */
+.travaux-dirigés-td .event-color-bar {
+    background-color: #3a86ff;
+}
+
+.travaux-pratiques-tp .event-color-bar {
+    background-color: #8338ec;
+}
+
+.cours-magistraux-cm .event-color-bar {
+    background-color: #ff9e00;
+}
+
+.projet-en-autonomie .event-color-bar {
+    background-color: #06d6a0;
+}
+
+.ds .event-color-bar {
+    background-color: #ef476f;
+}
+
+.reunion .event-color-bar {
+    background-color: #8ac926;
+}
+
+/* Add these additional selectors to catch all variations */
+.travaux-dirigés .event-color-bar {
+    background-color: #3a86ff;
+}
+
+.travaux-pratiques .event-color-bar {
+    background-color: #8338ec;
+}
+
+.cours-magistraux .event-color-bar {
+    background-color: #ff9e00;
+}
+
+/* Styles based on event duration */
+.short-event {
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.medium-event {
+    background-color: rgba(255, 255, 255, 0.97);
+}
+
+.long-event {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Alternate background for readability */
+.timetable td:nth-child(2n+3) {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .timetable-wrapper {
+        padding: 0.5rem;
+    }
+
+    .timetable {
+        font-size: 0.85em;
+    }
+
+    .time-cell {
+        width: 60px;
+    }
+
+    .event {
+        padding: 6px;
+    }
+
+    .event-title {
+        font-size: 0.9em;
+    }
+
+    /* Make event cells larger on mobile for better touch targets */
+    .event-basic-info {
+        font-size: 0.8em;
+    }
+}
+
+/* Mobile day selector */
+.timetable-day-selector {
+    display: none;
+    /* Hidden by default, shown only in mobile view */
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--light-color);
+    border-radius: 6px;
+}
+
+.mobile-view .timetable-day-selector {
+    display: flex;
+}
+
+.current-day {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    flex-grow: 1;
+    color: var(--text-color);
+}
+
+.day-nav-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.day-nav-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Mobile view specific styles */
+.mobile-view .timetable {
+    min-width: 250px;
+    /* Smaller min-width for mobile */
+}
+
+/* Modal styles */
+.timetable-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Darker by default */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    /* Even higher z-index */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    /* Initially disable pointer events */
+    transition: all 0.3s ease;
+    /* Transition all properties */
+}
+
+/* Restore proper visibility when active */
+.timetable-modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    /* Enable pointer events when visible */
+}
+
+
+/* Modal container styling */
+.timetable-modal {
+    background-color: var(--cell-bg);
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    padding: 20px;
+    box-shadow: 0 10px 30px var(--event-shadow);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    opacity: 1;
+    border: 1px solid var(--border-color);
+    z-index: 2;
+    color: var(--text-color);
+}
+
+/* Close button styling for better visibility */
+.timetable-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: var(--muted-text);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.timetable-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.timetable-modal-title {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.timetable-modal-close:hover {
+    color: var(--text-color);
+}
+
+.timetable-modal-body {
+    margin-bottom: 15px;
+}
+
+.timetable-modal-footer {
+    text-align: right;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.timetable-modal-footer .btn-close {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.timetable-modal-footer .btn-close:hover {
+    background-color: var(--secondary-color);
+}
+
+.timetable-modal-info {
+    margin-bottom: 12px;
+}
+
+.timetable-modal-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: var(--muted-text);
+}
+
+.timetable-modal-info p {
+    margin: 0;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.modal-color-indicator {
+    height: 5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin: -20px -20px 15px -20px;
+}
+
+/* Dark theme specific modal adjustments */
+.dark-theme .timetable-modal {
+    background-color: var(--cell-bg);
+    border: 1px solid var(--border-color);
+}

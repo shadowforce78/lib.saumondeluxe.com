@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaumonDeLuxe - Bibliothèques JavaScript</title>
+    <style>
+        :root {
+            --primary-color: #ff5722;
+            --secondary-color: #3498db;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
+            --border-radius: 8px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #e64a19);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .projects {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .projects {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .project-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .features-list {
+            list-style-type: none;
+            margin: 1rem 0;
+        }
+        
+        .features-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .features-list li::before {
+            content: "✓";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e64a19;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2980b9;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SaumonDeLuxe</h1>
+            <p>Bibliothèques JavaScript modernes et sans dépendances</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section class="intro">
+            <h2>Nos Solutions JavaScript</h2>
+            <p>Des bibliothèques légères, performantes et faciles à intégrer pour vos projets web.</p>
+        </section>
+        
+        <section class="projects">
+            <div class="project-card">
+                <img src="CustomVideoPlayer/img/preview.png" alt="CustomVideoPlayer" class="project-image" onerror="this.src='https://via.placeholder.com/400x200?text=CustomVideoPlayer'">
+                <div class="project-content">
+                    <h3 class="project-title">CustomVideoPlayer</h3>
+                    <p>Un lecteur vidéo personnalisé et moderne créé en JavaScript pur, sans dépendances externes.</p>
+                    <ul class="features-list">
+                        <li>Interface élégante avec contrôles auto-masquants</li>
+                        <li>Prévisualisation au survol de la barre de progression</li>
+                        <li>Sélecteur de qualité et contrôle de vitesse</li>
+                        <li>Mode Picture-in-Picture et plein écran</li>
+                        <li>Compatible mobile avec interface responsive</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="/CustomVideoPlayer/" class="btn">Démonstration</a>
+                        <a href="/CustomVideoPlayer/README.md" class="btn btn-secondary">Documentation</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <img src="TimeTableLib/preview.png" alt="TimeTableLib" class="project-image" onerror="this.src='https://via.placeholder.com/400x200?text=TimeTableLib'">
+                <div class="project-content">
+                    <h3 class="project-title">TimeTableLib</h3>
+                    <p>Bibliothèque JavaScript légère pour créer des emplois du temps interactifs et personnalisables.</p>
+                    <ul class="features-list">
+                        <li>Segments de 15 minutes pour une précision optimale</li>
+                        <li>Design responsive adapté à tous les appareils</li>
+                        <li>Modal pour les informations détaillées</li>
+                        <li>Personnalisable via CSS</li>
+                        <li>Support de plusieurs systèmes de modules</li>
+                    </ul>
+                    <div class="btn-container">
+                        <a href="/TimeTableLib/" class="btn">Démonstration</a>
+                        <a href="/TimeTableLib/README.md" class="btn btn-secondary">Documentation</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 SaumonDeLuxe. Tous droits réservés.</p>
+            <p>Contact: <a href="mailto:contact@saumondeluxe.com" style="color: white;">contact@saumondeluxe.com</a></p>
+        </div>
+    </footer>
+</body>
+</html>
