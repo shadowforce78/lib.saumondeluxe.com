@@ -396,7 +396,7 @@
                     markdown = markdown.replace(/<!--\s*filepath:.*?-->/i, '');
 
                     // Convertir le Markdown en HTML
-                    const htmlContent = marked(markdown);
+                    const htmlContent = marked.parse(markdown);
                     modalContent.innerHTML = htmlContent;
 
                     // Ajouter des classes aux éléments pour améliorer le style
